@@ -29,8 +29,6 @@ const AddPet = async (req) => {
 };
 
 const UpdatePet = async (req) => {
-  console.log('im here');
-  console.log(req.body);
   try {
     const pet = await Pet.findByIdAndUpdate(req.params.id, req.body);
     return pet;
