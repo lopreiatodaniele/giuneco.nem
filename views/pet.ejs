@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head') %>
+  <body>
+    <div
+      class="vh-100 d-flex flex-column align-items-center justify-content-center p-5 gap-3"
+    >
+      <div class="container-fluid shadow-lg p-5 rounded">
+        <h3 class="text-center text-uppercase">
+          Modifica animale di compagnia
+        </h3>
+        <form class="d-flex flex-column gap-3">
+          <div class="form-group">
+            <label for="name" class="form-label">Nome</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              name="name"
+              value="<%= pet?.name %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name" class="form-label">Tipo</label>
+            <input
+              type="text"
+              id="petType"
+              class="form-control"
+              name="petType"
+              value="<%= pet?.petType %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name" class="form-label">Razza</label>
+            <input
+              type="text"
+              id="petRace"
+              class="form-control"
+              name="petRace"
+              value="<%= pet?.petRace %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name" class="form-label">Data di nascita</label>
+            <input
+              type="date"
+              id="dob"
+              class="form-control"
+              name="dob"
+              value="<%= pet?.dob?.toISOString().split('T')[0] %>"
+            />
+          </div>
+          <button class="btn btn-primary" id="form__button">Invia</button>
+        </form>
+      </div>
+      <a href="/pets">Vai alla lista</a>
+    </div>
+    <script>
+      let formSubmit = document.getElementById('form__button');
+
+      formSubmit.addEventListener('click', function (e) {
+        e.preventDefault();
+        let name = document.getElementById('name').value;
+        let petType = document.getElementById('petType').value;
+        let petRace = document.getElementById('petRace').value;
+        let dob = document.getElementById('dob').value;
+        let data = { name, petType, petRace, dob };
+        fetch('/pets/<%= pet.id %>', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then(function (response) {
+            window.location.href = '/pets';
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+    </script>
+  </body>
+</html>
