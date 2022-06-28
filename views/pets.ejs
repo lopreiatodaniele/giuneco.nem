@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head') %>
+  <body>
+    <div
+      class="vh-100 d-flex flex-column align-items-center justify-content-center p-5 gap-3"
+    >
+      <div class="container-fluid shadow-lg p-5 rounded">
+        <h3 class="text-center text-uppercase">Animali registrati</h3>
+        <% if(pets.length > 0) { %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center" scope="col">Nome</th>
+              <th class="text-center" scope="col">Tipo</th>
+              <th class="text-center" scope="col">Razza</th>
+              <th class="text-center" scope="col">Data di nascita</th>
+              <th class="text-center" scope="col">Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pets.forEach(pet => { %>
+            <tr>
+              <td class="text-center"><%= pet?.name %></td>
+              <td class="text-center"><%= pet?.petType %></td>
+              <td class="text-center"><%= pet?.petRace %></td>
+              <td class="text-center">
+                <%= pet?.dob?.toISOString().split('T')[0] %>
+              </td>
+              <td class="d-flex justify-content-evenly">
+                <i
+                  class="bi-trash text-danger cursor-pointer zoom-animation"
+                  id="deleteButton"
+                  data-id="<%= pet.id %>"
+                ></i>
+                <i
+                  class="bi-pencil text-warning cursor-pointer zoom-animation"
+                  id="editButton"
+                  data-id="<%= pet.id %>"
+                ></i>
+              </td>
+            </tr>
+            <% })} else { %>
+            <p>Al momento non è stato registrato alcun animale da compagnia!</p>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <a href="/">Torna alla home</a>
+    </div>
+    <script>
+      let deleteButton = document.getElementById('deleteButton');
+      let editButton = document.getElementById('editButton');
+      deleteButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        let id = e.target.dataset.id;
+        fetch('/pets/' + id, {
+          method: 'DELETE',
+          mode: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+
+      editButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        let id = e.target.dataset.id;
+        fetch('/pets/' + id, {
+          method: 'GET',
+          mode: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            location.replace(response.url);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    </script>
+  </body>
+</html>
