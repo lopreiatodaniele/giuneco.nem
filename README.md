@@ -1,4 +1,6 @@
-# ExpressJS - Mongoose REST API
+# Giuneco NEM stack
+
+# NodeJS - ExpressJS - Mongoose REST API
 
 Progetto per il PFA di Giuneco, 2022
 
